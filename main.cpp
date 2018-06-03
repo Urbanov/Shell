@@ -1,7 +1,8 @@
-#include <iostream>
+#include "Shell.h"
 
 int main()
 {
-    std::cout << "nie zdamy xD" << std::endl;
-    return 0;
+    Shell sh;
+    return sh.run();
 }
+
