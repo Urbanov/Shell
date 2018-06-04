@@ -11,7 +11,6 @@ public:
     Shell();
     virtual ~Shell();
     int run();
-    int createSingleProcess(std::string*, std::string*, std::string*); //later it needs to be private
 private:
     int splitArgs(std::string&, std::string*&);
     int countArgs(std::string&);

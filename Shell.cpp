@@ -3,6 +3,7 @@
 //
 
 #include "Shell.h"
+#include "Process.h"
 
 Shell::Shell()
 {
@@ -17,6 +18,7 @@ Shell::~Shell()
 int Shell::run()
 {
     Commands commands;
+    Process process;
     std::string line;
     std::string* args = nullptr;
     int nArgs = 0;
@@ -24,6 +26,7 @@ int Shell::run()
     do
     {
         std::cout << "> ";
+        nArgs = 0;
         std::getline(std::cin, line);
         nArgs = splitArgs(line, args);
         if(nArgs > 0)
@@ -31,6 +34,7 @@ int Shell::run()
             result = commands.checkCommands(args, nArgs);
             if(result < 0)
             {
+                process.parseArgsAndExecute(args, nArgs);
                 //TODO
             }
             delete[] args;
@@ -60,7 +64,7 @@ int Shell::countArgs(std::string& line)
 {
     int numberOfSpaces = 0;
     unsigned int i = 0;
-
+    bool lastSpace = false;
     if(line.size() == 0)
     {
         return 0;
@@ -75,49 +79,16 @@ int Shell::countArgs(std::string& line)
     {
         if(isspace(line.at(i)))
         {
-            ++numberOfSpaces;
-            while(isspace(line.at(i++)))
+            if(!lastSpace)
             {
-                if(line.at(i) == '\0')
-                {
-                    --numberOfSpaces;
-                }
+                lastSpace = true;
+                ++numberOfSpaces;
             }
+        }
+        else
+        {
+            lastSpace = false;
         }
     }
     return numberOfSpaces + 1;
-}
-int Shell::createSingleProcess(std::string* args, std::string* in = nullptr, std::string* out = nullptr)
-{
-    pid_t pid;
-    int status;
-    //char *arg[] = {"./a.out", NULL};
-    pid = fork();
-    if(pid == 0)
-    {
-        if(in != nullptr)
-        {
-            int inFd = open((*in).c_str(), O_RDWR | O_CREAT);
-            dup2(inFd, 0);
-        }
-        if(out != nullptr)
-        {
-            int outFd = open((*out).c_str(), O_RDWR | O_CREAT);
-            dup2(outFd, 1);
-        }
-        if(execvp(args[0].c_str(), NULL) == -1)
-        {
-            std::cerr << "Program exec does not exist\n";
-        }
-    }
-    else if(pid < 0)
-    {
-        std::cerr << "Cannot create new process\n";
-    }
-    else
-    {
-        waitpid(pid, &status, WUNTRACED);
-        //can do something with the status
-    }
-    return 0;
 }
