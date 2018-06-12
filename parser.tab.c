@@ -1478,9 +1478,3 @@ yyparse (void)
     return yyresult;
 }
 #line 83 "parser.y" /* yacc.c:1906  */
-
-
-int main()
-{
-    yyparse();
-}
