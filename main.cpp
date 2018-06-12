@@ -8,7 +8,5 @@ extern "C"
 int main()
 {
     yyparse();
-    Shell sh;
-    return sh.run();
 }
 

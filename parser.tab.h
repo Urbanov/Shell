@@ -43,8 +43,8 @@ extern int yydebug;
 /* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-  enum yytokentype
-  {
+enum yytokentype
+{
     VARIABLE_ID = 258,
     COMMAND = 259,
     STRING_VALUE = 260,
@@ -52,7 +52,7 @@ extern int yydebug;
     FLOAT_VALUE = 262,
     EXECUTE = 263,
     EXPORT = 264
-  };
+};
 #endif
 
 /* Value type.  */
@@ -62,7 +62,7 @@ union YYSTYPE
 {
 #line 11 "parser.y" /* yacc.c:1909  */
 
-	char* s;
+    char* s;
 
 #line 68 "parser.tab.h" /* yacc.c:1909  */
 };
