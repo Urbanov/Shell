@@ -10,7 +10,7 @@ private:
     std::string test = "xddd";
 
 public:
-    void execute() override;
+    void execute() final;
 
     virtual int run() = 0;
 

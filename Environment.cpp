@@ -29,3 +29,11 @@ void Environment::exportVariable(const std::string& name)
     //TODO
     std::cout << "exporting " << name << std::endl;
 }
+
+void Environment::setExitCode(int exit) {
+
+}
+
+Environment::Environment() {
+
+}
