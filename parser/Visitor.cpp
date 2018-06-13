@@ -34,7 +34,7 @@ antlrcpp::Any Visitor::visitValue(ShellParser::ValueContext* context)
     std::shared_ptr<Value> value;
 
     if (context->runnable()) {
-        value = std::make_shared<Constant>("xd");
+        value = std::dynamic_pointer_cast<Value>(visitRunnable(context->runnable()).as<std::shared_ptr<Statement>>());
     }
     else if (context->VARIABLE_VALUE_TOKEN()) {
         value = std::make_shared<Variable>(context->VARIABLE_VALUE_TOKEN()->getText().substr(1));

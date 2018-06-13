@@ -21,7 +21,7 @@ public:
 
     const std::string& getName() const;
 
-    const std::string& getValue() const override;
+    const std::string getValue() const override;
 };
 
 

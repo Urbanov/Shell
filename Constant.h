@@ -11,7 +11,7 @@ private:
 public:
     Constant(const std::string& value);
 
-    const std::string& getValue() const override;
+    const std::string getValue() const override;
 };
 
 

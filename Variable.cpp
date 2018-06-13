@@ -21,7 +21,7 @@ bool Variable::operator==(const Variable& rhs) const
     return name == rhs.name;
 }
 
-const std::string& Variable::getValue() const
+const std::string Variable::getValue() const
 {
     return Environment::getInstance().getVariable(name)->value;
 }
