@@ -11,7 +11,7 @@ class Environment {
 private:
     std::unordered_map<std::string, std::shared_ptr<Variable>> variables;
 
-    static int exitCode = 0;
+    int exitCode = 0;
     Environment();
 
 public:

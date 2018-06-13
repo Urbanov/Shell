@@ -22,7 +22,7 @@ int Process::run() {
         exit(1);
     }
     else if(result > 0) {
-
+        pid = result;
     }
     else {
         std::cerr << "Fork failed." << std::endl;
@@ -44,11 +44,15 @@ const std::string Process::getValue() const {
 }
 
 Process::Process(const std::string &programPath, const std::vector<std::shared_ptr<Value>> &arguments)
-        : programPath(programPath), arguments(arguments)
+        : programPath(programPath), arguments(arguments), pid(-1)
 
 {
     newDescriptors.resize(3);
     for(int i = 0; i < newDescriptors.size(); ++i) {
         newDescriptors[i] = i;
     }
+}
+
+int Process::getPid() const {
+    return pid;
 }

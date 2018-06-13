@@ -23,11 +23,14 @@ public:
     //program can change descriptors of child process using this vector
     std::vector<int> newDescriptors;
 
+    int getPid() const;
+
 private:
     const std::string programPath;
 
     std::vector<std::shared_ptr<Value>> arguments;
 
+    int pid;
 };
 
 
