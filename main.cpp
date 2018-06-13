@@ -1,14 +1,10 @@
-#include "Shell.h"
-extern "C"
-{
-#include "parser.tab.h"
-}
 
+
+#include "Shell.h"
 
 int main()
 {
-    yyparse();
-    Shell sh;
-    return sh.run();
+    Shell shell;
+    shell.start();
 }
 
