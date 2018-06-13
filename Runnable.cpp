@@ -3,7 +3,7 @@
 
 const std::string& Runnable::getValue() const
 {
-    return "testujemy looo";
+    return test;
 }
 
 void Runnable::execute()

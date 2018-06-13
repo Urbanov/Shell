@@ -6,6 +6,9 @@
 #include "Statement.h"
 
 class Runnable : public Value, public Statement {
+private:
+    std::string test;
+
 public:
     void execute() override;
 

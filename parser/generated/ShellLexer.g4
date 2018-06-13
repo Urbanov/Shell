@@ -5,7 +5,7 @@ WHITESPACE
     ;
 
 COMMAND_TOKEN
-    : ('cd' | 'pwd' | 'ls' | 'echo' | 'exit') -> pushMode(ARGUMENTS)
+    : 'cd' | 'pwd' | 'ls' | 'echo' | 'exit'
     ;
 
 EXPORT_TOKEN
@@ -13,28 +13,22 @@ EXPORT_TOKEN
     ;
 
 VARIABLE_TOKEN
-    : [_a-zA-Z] ([_a-zA-Z0-9])* -> pushMode(ARGUMENTS)
+    : [a-zA-Z] ([a-zA-Z0-9])*
     ;
 
 PATH_TOKEN
-    : (QUOTE_STRING_TOKEN
-    | ~[ \t\r\n"'`]* '/' ~[ \t\r\n"'`]+) -> pushMode(ARGUMENTS)
+    : [-_.a-zA-Z0-9]* '/' [-_.a-zA-Z0-9]+
     ;
 
-mode ARGUMENTS;
 QUOTE_STRING_TOKEN
     : '\'' .*? '\''
-    ;
-
-ARGUMENTS_WHITESPACE
-    : [ \t\r\n]+ -> skip
     ;
 
 PIPE_TOKEN
     : '|'
     ;
 
-BACK_QOUTE_TOKEN
+BACK_QUOTE_TOKEN
     : '`'
     ;
 
@@ -51,16 +45,13 @@ RETURN_TOKEN
     ;
 
 INPUT_REDIRECTION_TOKEN
-    : '<' QUOTE_STRING_TOKEN
-    | '<' ~[ \t\r\n"'`=<>]+
+    : '<' [-_.a-zA-Z0-9]* '/' [-_.a-zA-Z0-9]+
     ;
 
 OUTPUT_REDIRECTION_TOKEN
-    : '>' QUOTE_STRING_TOKEN
-    | '>' ~[ \t\r\n"'`=<>]+
+    : '>' [-_.a-zA-Z0-9]* '/' [-_.a-zA-Z0-9]+
     ;
 
 CONSTANT_TOKEN
-    : QUOTE_STRING_TOKEN
-    | ~[ \t\r\n"'`=<>]+
+    : [-_.a-zA-Z0-9]+
     ;

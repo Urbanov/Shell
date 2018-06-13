@@ -16,6 +16,7 @@ void Command::echo()
         //TODO error
     }
 
+    //std::cout << arguments.size();
     std::cout << arguments[0]->getValue();
 }
 

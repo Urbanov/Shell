@@ -34,13 +34,19 @@ antlrcpp::Any Visitor::visitValue(ShellParser::ValueContext* context)
     std::shared_ptr<Value> value;
 
     if (context->runnable()) {
-        // TODO
+        value = std::make_shared<Constant>("xd");
     }
     else if (context->VARIABLE_VALUE_TOKEN()) {
         value = std::make_shared<Variable>(context->VARIABLE_VALUE_TOKEN()->getText().substr(1));
     }
     else if (context->RETURN_TOKEN()) {
         value = std::make_shared<Return>();
+    }
+    else if (context->PATH_TOKEN()) {
+        value = std::make_shared<Constant>(context->PATH_TOKEN()->getText());
+    }
+    else if (context->VARIABLE_TOKEN()) {
+        value = std::make_shared<Constant>(context->VARIABLE_TOKEN()->getText());
     }
     else if (context->CONSTANT_TOKEN()) {
         value = std::make_shared<Constant>(context->CONSTANT_TOKEN()->getText());

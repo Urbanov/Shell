@@ -13,10 +13,9 @@ class  ShellParser : public antlr4::Parser {
 public:
   enum {
     WHITESPACE = 1, COMMAND_TOKEN = 2, EXPORT_TOKEN = 3, VARIABLE_TOKEN = 4, 
-    PATH_TOKEN = 5, QUOTE_STRING_TOKEN = 6, ARGUMENTS_WHITESPACE = 7, PIPE_TOKEN = 8, 
-    BACK_QOUTE_TOKEN = 9, EQUALS_TOKEN = 10, VARIABLE_VALUE_TOKEN = 11, 
-    RETURN_TOKEN = 12, INPUT_REDIRECTION_TOKEN = 13, OUTPUT_REDIRECTION_TOKEN = 14, 
-    CONSTANT_TOKEN = 15
+    PATH_TOKEN = 5, QUOTE_STRING_TOKEN = 6, PIPE_TOKEN = 7, BACK_QUOTE_TOKEN = 8, 
+    EQUALS_TOKEN = 9, VARIABLE_VALUE_TOKEN = 10, RETURN_TOKEN = 11, INPUT_REDIRECTION_TOKEN = 12, 
+    OUTPUT_REDIRECTION_TOKEN = 13, CONSTANT_TOKEN = 14
   };
 
   enum {
@@ -77,11 +76,14 @@ public:
   public:
     ValueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<antlr4::tree::TerminalNode *> BACK_QOUTE_TOKEN();
-    antlr4::tree::TerminalNode* BACK_QOUTE_TOKEN(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> BACK_QUOTE_TOKEN();
+    antlr4::tree::TerminalNode* BACK_QUOTE_TOKEN(size_t i);
     RunnableContext *runnable();
     antlr4::tree::TerminalNode *VARIABLE_VALUE_TOKEN();
     antlr4::tree::TerminalNode *RETURN_TOKEN();
+    antlr4::tree::TerminalNode *PATH_TOKEN();
+    antlr4::tree::TerminalNode *VARIABLE_TOKEN();
+    antlr4::tree::TerminalNode *QUOTE_STRING_TOKEN();
     antlr4::tree::TerminalNode *CONSTANT_TOKEN();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
