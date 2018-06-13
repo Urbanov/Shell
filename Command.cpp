@@ -3,6 +3,10 @@
 #include <utility>
 #include <memory>
 #include <vector>
+#include <unistd.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 Command::Command(std::string command_id, std::vector<std::shared_ptr<Value>> arguments)
     : command_id(std::move(command_id))
@@ -16,47 +20,103 @@ Command::Command(std::string command_id, std::vector<std::shared_ptr<Value>> arg
     commands.insert(std::make_pair("cat", [this]() { return exit(); }));
 }
 
-int Command::run()
+int Command::run() const
 {
     return commands.at(command_id)();
 }
 
-int Command::echo()
+int Command::echo() const
 {
     if (arguments.size() != 1) {
-        //TODO error
+        std::cerr << "Invalid number of parameters";
+        return 1;
     }
 
-    std::cout << arguments[0]->getValue();
+    std::cout << arguments[0]->getValue() << std::endl;
 
     return 0;
 }
 
-int Command::cd()
+int Command::cd() const
 {
-    std::cout << "cd";
+    if (arguments.size() != 1) {
+        std::cerr << "Invalid number of parameters";
+        return 1;
+    }
+
+    if (chdir(arguments[0]->getValue().c_str()) != 0) {
+        std::cerr << "Directory doest not exist";
+        return 1;
+    }
+
     return 0;
 }
 
-int Command::pwd()
+int Command::pwd() const
 {
-    std::cout << "pwd";
+    const int dir_len = 1024;
+    char dir[dir_len];
+    getcwd(dir, dir_len);
+    std::cout << dir << std::endl;
     return 0;
 }
 
-int Command::ls()
+int Command::ls() const
 {
-    std::cout << "ls";
+    struct dirent** list_of_names = nullptr;
+    int n = 0;
+
+    if (!arguments.empty()) {
+        std::cerr << "Invalid number of parameters";
+        return 1;
+    }
+
+    n = scandir(".", &list_of_names, nullptr, alphasort);
+
+    for (int i = 0; i < n; ++i) {
+        std::cout << list_of_names[i]->d_name << std::endl;
+        free(list_of_names[i]);
+    }
+    free(list_of_names);
+
     return 0;
 }
 
-int Command::exit()
+int Command::exit() const
 {
     std::cout << "exit";
     return 0;
 }
 
-int Command::cat()
+int Command::cat() const
 {
     return 0;
+}
+
+const std::string Command::getValue() const
+{
+    int saved_stdout = dup(1);
+    char buffer[1024];
+    const char* path = "./pipe";
+    mkfifo(path, 0666);
+
+    int fd_in = open(path, O_RDONLY | O_NONBLOCK);
+    int fd_out = open(path, O_WRONLY);
+    dup2(fd_out, 1);
+
+    run();
+    read(fd_in, buffer, 1024);
+
+    close(fd_in);
+    close(fd_out);
+    unlink(path);
+    dup2(saved_stdout, 1);
+
+    std::string result;
+
+    for (int i = 0; i < 1024 && buffer[i] != '\n'; ++i) {
+        result += buffer[i];
+    }
+
+    return result;
 }

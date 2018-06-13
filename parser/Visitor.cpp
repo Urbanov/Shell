@@ -51,13 +51,17 @@ antlrcpp::Any Visitor::visitValue(ShellParser::ValueContext* context)
     else if (context->CONSTANT_TOKEN()) {
         value = std::make_shared<Constant>(context->CONSTANT_TOKEN()->getText());
     }
+    else if (context->QUOTE_STRING_TOKEN()) {
+        value = std::make_shared<Constant>(context->QUOTE_STRING_TOKEN()->getText().substr(1, context->QUOTE_STRING_TOKEN()->getText().size() - 2));
+    }
 
     return value;
 }
 
 antlrcpp::Any Visitor::visitExportEnv(ShellParser::ExportEnvContext* context)
 {
-    return antlrcpp::Any();
+    std::shared_ptr<Statement> exportEnv;
+
 }
 
 antlrcpp::Any Visitor::visitRunnable(ShellParser::RunnableContext* context)

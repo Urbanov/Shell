@@ -4,7 +4,9 @@
 
 class Shell {
 public:
-    void start();
+    void start() const;
+
+    void printPrompt() const;
 };
 
 

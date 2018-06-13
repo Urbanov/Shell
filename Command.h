@@ -14,17 +14,19 @@ private:
     std::vector<std::shared_ptr<Value>> arguments;
     std::unordered_map<std::string, std::function<int(void)>> commands;
 
-    int echo();
-    int cd();
-    int pwd();
-    int ls();
-    int exit();
-    int cat();
+    int echo() const;
+    int cd() const;
+    int pwd() const;
+    int ls() const;
+    int exit() const;
+    int cat() const;
 
 public:
     Command(std::string command_id, std::vector<std::shared_ptr<Value>> arguments);
 
-    int run() override;
+    int run() const override;
+
+    const std::string getValue() const override;
 };
 
 

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <unistd.h>
+#include <pwd.h>
 #include "Environment.h"
 
 std::shared_ptr<Variable> Environment::getVariable(const std::string& name)
@@ -8,8 +10,13 @@ std::shared_ptr<Variable> Environment::getVariable(const std::string& name)
         return search->second;
     }
 
-    variables.insert(std::make_pair(name, std::make_shared<Variable>(name)));
-    return variables.at(name);
+    auto variable = std::make_shared<Variable>(name);
+    auto value = getenv(name.c_str());
+    if (value) {
+        variable->assign(value);
+    }
+    variables.insert(std::make_pair(name, variable));
+    return variable;
 }
 
 Environment& Environment::getInstance()
@@ -18,14 +25,21 @@ Environment& Environment::getInstance()
     return instance;
 }
 
-int Environment::getExitCode()
+int Environment::getExitCode() const
 {
     //TODO
     return 0;
 }
 
-void Environment::exportVariable(const std::string& name)
+void Environment::exportVariable(const std::string& name) const
 {
     //TODO
     std::cout << "exporting " << name << std::endl;
+}
+
+const char* Environment::getUserName() const
+{
+    uid_t uid = geteuid();
+    struct passwd* pw = getpwuid(uid);
+    return pw->pw_name;
 }

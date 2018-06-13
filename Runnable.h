@@ -6,15 +6,10 @@
 #include "Statement.h"
 
 class Runnable : public Value, public Statement {
-private:
-    std::string test = "xddd";
-
 public:
     void execute() override;
 
-    virtual int run() = 0;
-
-    const std::string getValue() const override;
+    virtual int run() const = 0;
 };
 
 

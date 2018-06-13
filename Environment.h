@@ -16,9 +16,11 @@ public:
 
     std::shared_ptr<Variable> getVariable(const std::string& name);
 
-    void exportVariable(const std::string& name);
+    void exportVariable(const std::string& name) const;
 
-    int getExitCode();
+    int getExitCode() const;
+
+    const char* getUserName() const;
 };
 
 
