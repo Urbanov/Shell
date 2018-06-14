@@ -13,22 +13,30 @@
 
 class Process : public Runnable {
 public:
-    Process(const std::string& programPath, const std::vector<std::shared_ptr<Value>>& arguments);
+    Process(const std::string &programPath, const std::vector<std::shared_ptr<Value>> &arguments);
 
-    int run() const override;
+    int run() override;
 
     const std::string getValue() override;
 
-    char** convertProgramArguments() const;
 
     //program can change descriptors of child process using this vector
-    std::vector<int> newDescriptors;
+    std::vector<std::string> filePaths;
+
+    int getPid() const;
 
 private:
+    char **convertProgramArguments();
+
+    void changeStandardDescriptors();
+
     const std::string programPath;
 
     std::vector<std::shared_ptr<Value>> arguments;
 
+    int pid;
+
+    std::vector<int> descriptors;
 };
 
 
