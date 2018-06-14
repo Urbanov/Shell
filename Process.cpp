@@ -111,9 +111,11 @@ int Process::forkNewProcess() {
         }
         exit(1);
     } else if (result > 0) {
+
         pid = result;
         return 0;
     } else {
+
         std::cerr << "Fork failed." << std::endl;
         return -1;
     }
@@ -141,4 +143,10 @@ std::string Process::redirectOutputReadLoop(const char *path, char *buf, size_t 
         close(fd);
     }
     return value;
+}
+
+void Process::setDescPath(int index, std::string &path) {
+    if(index >=0 && index < filePaths.size()) {
+        filePaths[index] = path;
+    }
 }

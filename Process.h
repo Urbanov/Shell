@@ -20,8 +20,9 @@ public:
     const std::string getValue() override;
 
 
-    //program can change descriptors of child process using this vector
-    std::vector<std::string> filePaths;
+
+
+    void setDescPath(int index, std::string &path);
 
     int getPid() const;
 
@@ -33,9 +34,12 @@ public:
 
     void setOutput(const std::string& output);
 
+    int forkNewProcess();
+
 private:
 
-    int forkNewProcess();
+    //program can change descriptors of child process using this vector
+    std::vector<std::string> filePaths;
 
     char** convertProgramArguments();
 
