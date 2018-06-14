@@ -8,6 +8,7 @@ void kill_em_all(int sig)
 {
     Environment::getInstance().isTerminated = true;
     Environment::getInstance().propagateSIGINT();
+    std::cout<<std::endl;
 }
 
 int main()

@@ -6,6 +6,7 @@
 #include <wait.h>
 #include "Process.h"
 #include "../Environment.h"
+#include <regex>
 
 int Process::run()
 {
@@ -23,11 +24,22 @@ int Process::run()
 
 char** Process::convertProgramArguments()
 {
-    auto** convertedArguments = new char* [arguments.size() + 1];
+    auto** convertedArguments = new char* [arguments.size() + 2];
     int count = 0;
+    std::regex programName("[^/]*?$");
+    std::smatch match;
+    if(std::regex_search(programPath.begin(), programPath.end(), match, programName)) {
+        std::cout << "match " << match[0] << std::endl;
+    }
+    std::string name = match.str(0);
+    convertedArguments[count] = new char[name.size() + 1];
+    std::copy(name.begin(), name.end(), convertedArguments[count]);
+    ++count;
     for (auto &element : arguments) {
+        std::cout<<element->getValue().c_str()<<std::endl;
         convertedArguments[count] = strdup(element->getValue().c_str());
         count++;
+//        std::cout<<convertedArguments[count]<<std::endl;
     }
     convertedArguments[count] = nullptr;
     return convertedArguments;
@@ -110,6 +122,7 @@ int Process::forkNewProcess()
     int result = fork();
     if (result == 0) {
         changeStandardDescriptors();
+
         execv(programPath.c_str(), convertProgramArguments());
         for (auto i : descriptors) {
             close(i);
