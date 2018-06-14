@@ -11,6 +11,7 @@
 #include "Process.h"
 
 int Process::run() {
+    setRedirections();
     int result = fork();
     if(result == 0) {
         changeStandardDescriptors();
@@ -39,25 +40,30 @@ char **Process::convertProgramArguments() {
 }
 
 const std::string Process::getValue()  {
+    if(!output.empty()) {
+        run();
+        return "";
+    }
+    setRedirections();
+    const char* path = "/tmp/output_pipe";
     const int buf_len = 512;
     char buf[buf_len];
-    int status = 0;
-    int check = mkfifo("/tmp/output_pipe", 0666);
-    filePaths[1] = "/tmp/output_pipe";
+    int check = mkfifo(path, 0666);
+    filePaths[1] = path;
     run();
-    int fd = open("/tmp/output_pipe", O_RDONLY);
+    int fd = open(path, O_RDONLY);
     ssize_t len = 0;
     std::string value;
     while((len = read(fd, buf, buf_len)) > 0) {
         value.append(buf, static_cast<unsigned long>(len));
     }
     close(fd);
-    unlink("/tmp/output_pipe");
+    unlink(path);
     return value;
 
     //alternatywny kod zmien buf na 512
 
-//
+//    int status = 0;
 //    waitpid(pid, &status, 0);
 //    auto length = read(fd, buf, 65536);
 //    return std::string(buf, static_cast<unsigned long>(length));
@@ -87,5 +93,31 @@ void Process::changeStandardDescriptors() {
             dup2(descriptors[i], i);
             close(descriptors[i]); //TODO check if not problematic line
         }
+    }
+}
+
+const std::string &Process::getInput() const {
+    return input;
+}
+
+void Process::setInput(const std::string &input) {
+    Process::input = input;
+}
+
+const std::string &Process::getOutput() const {
+    return output;
+}
+
+void Process::setOutput(const std::string &output) {
+    Process::output = output;
+}
+
+void Process::setRedirections() {
+    if(!input.empty()) {
+        filePaths[0] = input;
+    }
+
+    if(!output.empty()) {
+        filePaths[1] = output;
     }
 }
