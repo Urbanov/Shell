@@ -7,7 +7,7 @@
 
 class Runnable : public Value, public Statement {
 public:
-    void execute() override;
+    void execute() final;
 
     virtual int run() const = 0;
 };

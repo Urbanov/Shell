@@ -43,3 +43,11 @@ const char* Environment::getUserName() const
     struct passwd* pw = getpwuid(uid);
     return pw->pw_name;
 }
+
+void Environment::setExitCode(int exit) {
+
+}
+
+Environment::Environment() {
+
+}
