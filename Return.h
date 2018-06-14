@@ -6,7 +6,7 @@
 
 class Return : public Value {
 public:
-    const std::string getValue() const override;
+    const std::string getValue() override;
 };
 
 

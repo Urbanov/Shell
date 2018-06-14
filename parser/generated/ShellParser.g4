@@ -17,7 +17,7 @@ value
     ;
 
 exportEnv
-    : EXPORT_TOKEN (VARIABLE_TOKEN | assignment)
+    : EXPORT_TOKEN VARIABLE_TOKEN
     ;
 
 runnable

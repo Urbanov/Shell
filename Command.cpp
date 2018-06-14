@@ -1,4 +1,5 @@
 #include "Command.h"
+#include "Environment.h"
 #include <iostream>
 #include <utility>
 #include <memory>
@@ -17,7 +18,6 @@ Command::Command(std::string command_id, std::vector<std::shared_ptr<Value>> arg
     commands.insert(std::make_pair("pwd", [this]() { return pwd(); }));
     commands.insert(std::make_pair("ls", [this]() { return ls(); }));
     commands.insert(std::make_pair("exit", [this]() { return exit(); }));
-    commands.insert(std::make_pair("cat", [this]() { return exit(); }));
 }
 
 int Command::run() const
@@ -28,7 +28,7 @@ int Command::run() const
 int Command::echo() const
 {
     if (arguments.size() != 1) {
-        std::cerr << "Invalid number of parameters";
+        std::cerr << "Invalid number of parameters" << std::endl;
         return 1;
     }
 
@@ -40,12 +40,12 @@ int Command::echo() const
 int Command::cd() const
 {
     if (arguments.size() != 1) {
-        std::cerr << "Invalid number of parameters";
+        std::cerr << "Invalid number of parameters" << std::endl;
         return 1;
     }
 
     if (chdir(arguments[0]->getValue().c_str()) != 0) {
-        std::cerr << "Directory doest not exist";
+        std::cerr << "Directory does not exist" << std::endl;
         return 1;
     }
 
@@ -67,7 +67,7 @@ int Command::ls() const
     int n = 0;
 
     if (!arguments.empty()) {
-        std::cerr << "Invalid number of parameters";
+        std::cerr << "Invalid number of parameters" << std::endl;
         return 1;
     }
 
@@ -84,20 +84,15 @@ int Command::ls() const
 
 int Command::exit() const
 {
-    std::cout << "exit";
+    Environment::getInstance().exit();
     return 0;
 }
 
-int Command::cat() const
-{
-    return 0;
-}
-
-const std::string Command::getValue() const
+const std::string Command::getValue()
 {
     int saved_stdout = dup(1);
     char buffer[1024];
-    const char* path = "./pipe";
+    const char* path = "/tmp/command_pipe";
     mkfifo(path, 0666);
 
     int fd_in = open(path, O_RDONLY | O_NONBLOCK);
@@ -112,9 +107,11 @@ const std::string Command::getValue() const
     unlink(path);
     dup2(saved_stdout, 1);
 
-    std::string result;
+    int last = 1023;
+    for (last; last >= 0 && buffer[last] != '\n'; --last);
 
-    for (int i = 0; i < 1024 && buffer[i] != '\n'; ++i) {
+    std::string result;
+    for (int i = 0; i < last; ++i) {
         result += buffer[i];
     }
 

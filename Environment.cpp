@@ -27,14 +27,12 @@ Environment& Environment::getInstance()
 
 int Environment::getExitCode() const
 {
-    //TODO
-    return 0;
+    return exitCode;
 }
 
-void Environment::exportVariable(const std::string& name) const
+void Environment::exportVariable(const std::string& name)
 {
-    //TODO
-    std::cout << "exporting " << name << std::endl;
+    setenv(name.c_str(), getVariable(name)->getDirectValue().c_str(), 1);
 }
 
 const char* Environment::getUserName() const
@@ -44,10 +42,22 @@ const char* Environment::getUserName() const
     return pw->pw_name;
 }
 
-void Environment::setExitCode(int exit) {
-
+void Environment::setExitCode(int exit)
+{
+    exitCode = exit;
 }
 
-Environment::Environment() {
+Environment::Environment()
+    : exitCode(0)
+    , running(true)
+{}
 
+bool Environment::isRunning() const
+{
+    return running;
+}
+
+void Environment::exit()
+{
+    running = false;
 }

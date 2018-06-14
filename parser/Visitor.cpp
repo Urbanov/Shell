@@ -4,6 +4,7 @@
 #include "../Return.h"
 #include "../Constant.h"
 #include "../Command.h"
+#include "../ExportEnv.h"
 
 antlrcpp::Any Visitor::visitStatement(ShellParser::StatementContext* context)
 {
@@ -60,8 +61,8 @@ antlrcpp::Any Visitor::visitValue(ShellParser::ValueContext* context)
 
 antlrcpp::Any Visitor::visitExportEnv(ShellParser::ExportEnvContext* context)
 {
-    std::shared_ptr<Statement> exportEnv;
-
+    std::shared_ptr<Statement> exportEnv = std::make_shared<ExportEnv>(context->VARIABLE_TOKEN()->getText());
+    return exportEnv;
 }
 
 antlrcpp::Any Visitor::visitRunnable(ShellParser::RunnableContext* context)

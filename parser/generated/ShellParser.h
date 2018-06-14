@@ -98,7 +98,6 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *EXPORT_TOKEN();
     antlr4::tree::TerminalNode *VARIABLE_TOKEN();
-    AssignmentContext *assignment();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    

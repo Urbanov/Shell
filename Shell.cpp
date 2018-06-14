@@ -9,20 +9,21 @@ void Shell::start() const
 {
     std::string line;
 
-    while (true) {
+    do {
         printPrompt();
         std::getline(std::cin, line);
 
-        auto statement = Parser::parse(line);
-
-        try {
-            statement->execute();
+        if (!line.empty()) {
+            try {
+                auto statement = Parser::parse(line);
+                statement->execute();
+            }
+            catch (std::exception& e) {
+                std::cout << e.what() << std::endl;
+            }
         }
-        catch (std::exception& e) {
-            std::cout << e.what() << std::endl;
-        }
 
-    }
+    } while (Environment::getInstance().isRunning());
 }
 
 void Shell::printPrompt() const

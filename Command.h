@@ -19,14 +19,13 @@ private:
     int pwd() const;
     int ls() const;
     int exit() const;
-    int cat() const;
 
 public:
     Command(std::string command_id, std::vector<std::shared_ptr<Value>> arguments);
 
     int run() const override;
 
-    const std::string getValue() const override;
+    const std::string getValue() override;
 };
 
 
