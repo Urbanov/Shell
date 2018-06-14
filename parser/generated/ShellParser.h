@@ -12,16 +12,15 @@
 class  ShellParser : public antlr4::Parser {
 public:
   enum {
-    WHITESPACE = 1, COMMAND_TOKEN = 2, EXPORT_TOKEN = 3, VARIABLE_TOKEN = 4, 
-    PATH_TOKEN = 5, QUOTE_STRING_TOKEN = 6, PIPE_TOKEN = 7, BACK_QUOTE_TOKEN = 8, 
-    EQUALS_TOKEN = 9, VARIABLE_VALUE_TOKEN = 10, RETURN_TOKEN = 11, INPUT_REDIRECTION_TOKEN = 12, 
-    OUTPUT_REDIRECTION_TOKEN = 13, CONSTANT_TOKEN = 14
+      WHITESPACE = 1, COMMAND_TOKEN = 2, VARIABLE_TOKEN = 3, PATH_TOKEN = 4,
+      QUOTE_STRING_TOKEN = 5, PIPE_TOKEN = 6, BACK_QUOTE_TOKEN = 7, EQUALS_TOKEN = 8,
+      VARIABLE_VALUE_TOKEN = 9, RETURN_TOKEN = 10, INPUT_REDIRECTION_TOKEN = 11,
+      OUTPUT_REDIRECTION_TOKEN = 12, CONSTANT_TOKEN = 13
   };
 
   enum {
-    RuleStatement = 0, RuleAssignment = 1, RuleValue = 2, RuleExportEnv = 3, 
-    RuleRunnable = 4, RuleArguments = 5, RuleProcess = 6, RuleCommand = 7, 
-    RulePipe = 8
+      RuleStatement = 0, RuleAssignment = 1, RuleValue = 2, RuleRunnable = 3,
+      RuleArguments = 4, RuleProcess = 5, RuleCommand = 6, RulePipe = 7
   };
 
   ShellParser(antlr4::TokenStream *input);
@@ -37,7 +36,6 @@ public:
   class StatementContext;
   class AssignmentContext;
   class ValueContext;
-  class ExportEnvContext;
   class RunnableContext;
   class ArgumentsContext;
   class ProcessContext;
@@ -49,7 +47,6 @@ public:
     StatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     AssignmentContext *assignment();
-    ExportEnvContext *exportEnv();
     RunnableContext *runnable();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -91,19 +88,6 @@ public:
   };
 
   ValueContext* value();
-
-  class  ExportEnvContext : public antlr4::ParserRuleContext {
-  public:
-    ExportEnvContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EXPORT_TOKEN();
-    antlr4::tree::TerminalNode *VARIABLE_TOKEN();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExportEnvContext* exportEnv();
 
   class  RunnableContext : public antlr4::ParserRuleContext {
   public:

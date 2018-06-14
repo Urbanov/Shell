@@ -17,7 +17,8 @@ Command::Command(std::string command_id, std::vector<std::shared_ptr<Value>> arg
     commands.insert(std::make_pair("cd", [this]() { return cd(); }));
     commands.insert(std::make_pair("pwd", [this]() { return pwd(); }));
     commands.insert(std::make_pair("ls", [this]() { return ls(); }));
-    commands.insert(std::make_pair("exit", [this]() { return exit(); }));
+    commands.insert(std::make_pair("export", [this]() { return exportVar(); })),
+        commands.insert(std::make_pair("exit", [this]() { return exit(); }));
 }
 
 int Command::run()
@@ -88,10 +89,32 @@ int Command::exit() const
     return 0;
 }
 
+int Command::exportVar() const
+{
+    if (arguments.empty()) {
+        int i = 1;
+        char* var = *environ;
+        for (i; var; i++) {
+            std::cout << var << std::endl;
+            var = *(environ + i);
+        }
+        return 0;
+    }
+
+    if (arguments.size() == 1) {
+        Environment::getInstance().exportVariable(arguments[0]->getValue());
+        return 0;
+    }
+
+    std::cerr << "Invalid number of parameters" << std::endl;
+    return 1;
+}
+
 const std::string Command::getValue()
 {
+    int len = 65536;
     int saved_stdout = dup(1);
-    char buffer[1024];
+    char buffer[len];
     const char* path = "/tmp/command_pipe";
     mkfifo(path, 0666);
 
@@ -100,18 +123,15 @@ const std::string Command::getValue()
     dup2(fd_out, 1);
 
     run();
-    read(fd_in, buffer, 1024);
+    auto fetched = read(fd_in, buffer, static_cast<size_t>(len));
 
     close(fd_in);
     close(fd_out);
     unlink(path);
     dup2(saved_stdout, 1);
 
-    int last = 1023;
-    for (last; last >= 0 && buffer[last] != '\n'; --last);
-
     std::string result;
-    for (int i = 0; i < last; ++i) {
+    for (int i = 0; i < fetched; ++i) {
         result += buffer[i];
     }
 

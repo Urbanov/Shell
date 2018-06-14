@@ -20,6 +20,8 @@ private:
     int ls() const;
     int exit() const;
 
+    int exportVar() const;
+
 public:
     Command(std::string command_id, std::vector<std::shared_ptr<Value>> arguments);
 

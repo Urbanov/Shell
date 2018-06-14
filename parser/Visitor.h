@@ -12,8 +12,6 @@ public:
 
     antlrcpp::Any visitValue(ShellParser::ValueContext* context) override;
 
-    antlrcpp::Any visitExportEnv(ShellParser::ExportEnvContext* context) override;
-
     antlrcpp::Any visitRunnable(ShellParser::RunnableContext* context) override;
 
     antlrcpp::Any visitArguments(ShellParser::ArgumentsContext* context) override;

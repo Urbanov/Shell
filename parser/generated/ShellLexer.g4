@@ -5,11 +5,7 @@ WHITESPACE
     ;
 
 COMMAND_TOKEN
-    : 'cd' | 'pwd' | 'ls' | 'echo' | 'exit'
-    ;
-
-EXPORT_TOKEN
-    : 'export'
+    : 'cd' | 'pwd' | 'ls' | 'echo' | 'exit' | 'export'
     ;
 
 VARIABLE_TOKEN

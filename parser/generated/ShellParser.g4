@@ -4,7 +4,6 @@ options { tokenVocab=ShellLexer; }
 
 statement
     : assignment
-    | exportEnv
     | runnable
     ;
 
@@ -14,10 +13,6 @@ assignment
 
 value
     : BACK_QUOTE_TOKEN runnable BACK_QUOTE_TOKEN | VARIABLE_VALUE_TOKEN | RETURN_TOKEN | PATH_TOKEN | VARIABLE_TOKEN | QUOTE_STRING_TOKEN | CONSTANT_TOKEN
-    ;
-
-exportEnv
-    : EXPORT_TOKEN VARIABLE_TOKEN
     ;
 
 runnable

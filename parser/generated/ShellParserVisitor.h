@@ -25,8 +25,6 @@ public:
 
     virtual antlrcpp::Any visitValue(ShellParser::ValueContext *context) = 0;
 
-    virtual antlrcpp::Any visitExportEnv(ShellParser::ExportEnvContext *context) = 0;
-
     virtual antlrcpp::Any visitRunnable(ShellParser::RunnableContext *context) = 0;
 
     virtual antlrcpp::Any visitArguments(ShellParser::ArgumentsContext *context) = 0;

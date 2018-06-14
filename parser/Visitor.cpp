@@ -4,13 +4,11 @@
 #include "../Return.h"
 #include "../Constant.h"
 #include "../Command.h"
-#include "../ExportEnv.h"
 #include "../Process.h"
 #include "../Pipe.h"
 
 antlrcpp::Any Visitor::visitStatement(ShellParser::StatementContext* context)
 {
-
     std::shared_ptr<Statement> statement;
 
     if (context->assignment()) {
@@ -18,9 +16,6 @@ antlrcpp::Any Visitor::visitStatement(ShellParser::StatementContext* context)
     }
     else if (context->runnable()) {
         statement = visitRunnable(context->runnable());
-    }
-    else if (context->exportEnv()) {
-        statement = visitExportEnv(context->exportEnv());
     }
 
     return statement;
@@ -59,12 +54,6 @@ antlrcpp::Any Visitor::visitValue(ShellParser::ValueContext* context)
     }
 
     return value;
-}
-
-antlrcpp::Any Visitor::visitExportEnv(ShellParser::ExportEnvContext* context)
-{
-    std::shared_ptr<Statement> exportEnv = std::make_shared<ExportEnv>(context->VARIABLE_TOKEN()->getText());
-    return exportEnv;
 }
 
 antlrcpp::Any Visitor::visitRunnable(ShellParser::RunnableContext* context)
