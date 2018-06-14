@@ -18,7 +18,7 @@ Command::Command(std::string command_id, std::vector<std::shared_ptr<Value>> arg
     commands.insert(std::make_pair("pwd", [this]() { return pwd(); }));
     commands.insert(std::make_pair("ls", [this]() { return ls(); }));
     commands.insert(std::make_pair("export", [this]() { return exportVar(); })),
-        commands.insert(std::make_pair("exit", [this]() { return exit(); }));
+    commands.insert(std::make_pair("exit", [this]() { return exit(); }));
 }
 
 int Command::run()
