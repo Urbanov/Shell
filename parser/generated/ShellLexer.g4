@@ -41,11 +41,11 @@ RETURN_TOKEN
     ;
 
 INPUT_REDIRECTION_TOKEN
-    : '<' [-_.a-zA-Z0-9]* '/' [-_.a-zA-Z0-9]+
+    : '<' [-_.a-zA-Z0-9]+
     ;
 
 OUTPUT_REDIRECTION_TOKEN
-    : '>' [-_.a-zA-Z0-9]* '/' [-_.a-zA-Z0-9]+
+    : '>' [-_.a-zA-Z0-9]+
     ;
 
 CONSTANT_TOKEN

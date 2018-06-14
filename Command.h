@@ -15,9 +15,13 @@ private:
     std::unordered_map<std::string, std::function<int(void)>> commands;
 
     int echo() const;
+
     int cd() const;
+
     int pwd() const;
+
     int ls() const;
+
     int exit() const;
 
     int exportVar() const;
