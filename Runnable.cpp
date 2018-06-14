@@ -10,3 +10,6 @@ void Runnable::execute()
     }
     Environment::getInstance().setExitCode(exitCode);
 }
+
+//Environment::getInstance().setExitCode(run());
+//TODO change to one liner

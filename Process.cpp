@@ -23,8 +23,12 @@ int Process::run()
         exit(1);
     } else if (result > 0) {
         pid = result;
+        int state = 0;
+        waitpid(pid, &state, 0);
+        return WEXITSTATUS(state);
     } else {
         std::cerr << "Fork failed." << std::endl;
+        return -1;
     }
 }
 
@@ -92,7 +96,7 @@ void Process::changeStandardDescriptors()
     for (int i = 0; i < filePaths.size(); ++i) {
         if (!filePaths[i].empty()) {
             int flag = ((i == 0) ? O_WRONLY : O_RDONLY);
-            descriptors[i] = open(filePaths[i].c_str(), flag);
+            descriptors[i] = open(filePaths[i].c_str(), flag | O_CREAT);
             dup2(descriptors[i], i);
             close(descriptors[i]); //TODO check if not problematic line
         }
