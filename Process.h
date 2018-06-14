@@ -43,6 +43,10 @@ private:
 
     void setRedirections();
 
+    std::string redirectOutput();
+
+    std::string redirectOutputReadLoop(const char *path, char *buf, size_t buf_len);
+
     const std::string programPath;
 
     std::vector<std::shared_ptr<Value>> arguments;

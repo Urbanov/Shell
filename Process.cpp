@@ -38,23 +38,8 @@ const std::string Process::getValue()
         return "";
     }
     setRedirections();
-    const char* path = "/tmp/output_pipe";
-    const int buf_len = 512;
-    char buf[buf_len];
-    int check = mkfifo(path, 0666);
-    filePaths[1] = path;
-    std::string value;
-    if(forkNewProcess() == 0) {
-        int fd = open(path, O_RDONLY);
-        ssize_t len = 0;
-        while ((len = read(fd, buf, buf_len)) > 0) {
-            value.append(buf, static_cast<unsigned long>(len));
-        }
-        close(fd);
-    }
-    unlink(path);
-    return value;
-    
+    return redirectOutput();
+
 }
 
 Process::Process(const std::string& programPath, const std::vector<std::shared_ptr<Value>>& arguments)
@@ -132,4 +117,28 @@ int Process::forkNewProcess() {
         std::cerr << "Fork failed." << std::endl;
         return -1;
     }
+}
+
+std::string Process::redirectOutput() {
+    const char *path = "/tmp/output_pipe";
+    const size_t buf_len = 512;
+    char buf[buf_len];
+    int check = mkfifo(path, 0666);
+    filePaths[1] = path;
+    std::string value = redirectOutputReadLoop(path, buf, buf_len);
+    unlink(path);
+    return value;
+}
+
+std::string Process::redirectOutputReadLoop(const char *path, char *buf, size_t buf_len) {
+    std::string value;
+    if(forkNewProcess() == 0) {
+        int fd = open(path, O_RDONLY);
+        ssize_t len = 0;
+        while ((len = read(fd, buf, buf_len)) > 0) {
+            value.append(buf, static_cast<unsigned long>(len));
+        }
+        close(fd);
+    }
+    return value;
 }
