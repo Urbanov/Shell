@@ -34,6 +34,9 @@ public:
     void setOutput(const std::string& output);
 
 private:
+
+    int forkNewProcess();
+
     char** convertProgramArguments();
 
     void changeStandardDescriptors();
