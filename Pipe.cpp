@@ -11,7 +11,7 @@
 const int alphabet_length = 25;
 const int capital_a_ascii_number = 65;
 
-Pipe::Pipe(const std::list<Process>& processList) : processList(processList)
+Pipe::Pipe(const std::list<std::shared_ptr<Process>>& processList) : processList(processList)
 {
     namedPipes.resize(processList.size() - 1);
     for (int i = 0; i < namedPipes.size() - 1; ++i) {
@@ -28,7 +28,7 @@ int Pipe::run()
 {
     createPipes();
     for (auto& process : processList) {
-        process.execute();
+        process->execute();
     }
     waitForProcesses();
     destroyPipes();
@@ -39,10 +39,10 @@ const std::string Pipe::getValue()
     createPipes();
     auto iterator = processList.begin();
     for (int i = 0; i < processList.size() - 1; ++i) {
-        iterator->run();
+        (*iterator)->run();
         ++iterator;
     }
-    std::string result = iterator->getValue();
+    std::string result = (*iterator)->getValue();
     waitForProcesses();
     destroyPipes();
     return result;
@@ -53,8 +53,8 @@ void Pipe::createPipes()
     auto iterator = processList.begin();
     for (int i = 0; i < processList.size() - 1; ++i) {
         mkfifo(namedPipes[i].c_str(), 0666);
-        iterator->filePaths[0] = namedPipes[i];
-        (++iterator)->filePaths[1] = namedPipes[i];
+        (*iterator)->filePaths[0] = namedPipes[i];
+        (*(++iterator))->filePaths[1] = namedPipes[i];
     }
 }
 

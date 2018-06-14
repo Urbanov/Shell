@@ -5,6 +5,8 @@
 #include "../Constant.h"
 #include "../Command.h"
 #include "../ExportEnv.h"
+#include "../Process.h"
+#include "../Pipe.h"
 
 antlrcpp::Any Visitor::visitStatement(ShellParser::StatementContext* context)
 {
@@ -94,7 +96,15 @@ antlrcpp::Any Visitor::visitArguments(ShellParser::ArgumentsContext* context)
 
 antlrcpp::Any Visitor::visitProcess(ShellParser::ProcessContext* context)
 {
-    return antlrcpp::Any();
+    std::shared_ptr<Statement> process = std::make_shared<Process>(context->PATH_TOKEN()->getText(),
+                                                                   visitArguments(context->arguments()));
+    if (context->INPUT_REDIRECTION_TOKEN()) {
+        std::dynamic_pointer_cast<Process>(process)->setInput(context->INPUT_REDIRECTION_TOKEN()->getText());
+    }
+    if (context->OUTPUT_REDIRECTION_TOKEN()) {
+        std::dynamic_pointer_cast<Process>(process)->setInput(context->OUTPUT_REDIRECTION_TOKEN()->getText());
+    }
+    return process;
 }
 
 antlrcpp::Any Visitor::visitCommand(ShellParser::CommandContext* context)
@@ -105,5 +115,15 @@ antlrcpp::Any Visitor::visitCommand(ShellParser::CommandContext* context)
 
 antlrcpp::Any Visitor::visitPipe(ShellParser::PipeContext* context)
 {
-    return antlrcpp::Any();
+    std::shared_ptr<Statement> pipes;
+
+    std::list<std::shared_ptr<Process>> processes;
+    for (auto&& process_context : context->process()) {
+        std::shared_ptr<Process> process = std::dynamic_pointer_cast<Process>(
+            visitProcess(process_context).as<std::shared_ptr<Statement>>());
+        processes.push_back(process);
+    }
+
+    pipes = std::make_shared<Pipe>(processes);
+    return pipes;
 }
