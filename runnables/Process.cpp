@@ -114,6 +114,7 @@ int Process::forkNewProcess()
         for (auto i : descriptors) {
             close(i);
         }
+        std::cerr << "Failed to load program " << programPath.c_str() << std::endl;
         exit(1);
     } else if (result > 0) {
         pid = result;
