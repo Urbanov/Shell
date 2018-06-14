@@ -17,20 +17,26 @@ public:
 
     int run() override;
 
-    const std::string getValue() const override;
+    const std::string getValue() override;
 
-    char **convertProgramArguments();
+
     //program can change descriptors of child process using this vector
-    std::vector<int> newDescriptors;
+    std::vector<std::string> filePaths;
 
     int getPid() const;
 
 private:
+    char **convertProgramArguments();
+
+    void changeStandardDescriptors();
+
     const std::string programPath;
 
     std::vector<std::shared_ptr<Value>> arguments;
 
     int pid;
+
+    std::vector<int> descriptors;
 };
 
 

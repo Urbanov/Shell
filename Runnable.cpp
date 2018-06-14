@@ -2,7 +2,7 @@
 #include "Runnable.h"
 #include "Environment.h"
 
-const std::string Runnable::getValue() const
+const std::string Runnable::getValue()
 {
     return test;
 }

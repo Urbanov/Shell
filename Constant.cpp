@@ -1,6 +1,6 @@
 #include "Constant.h"
 
-const std::string Constant::getValue() const
+const std::string Constant::getValue()
 {
     return value;
 }

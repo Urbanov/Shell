@@ -14,7 +14,7 @@ public:
 
     virtual int run() = 0;
 
-    const std::string getValue() const override;
+    const std::string getValue() override;
 };
 
 
