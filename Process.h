@@ -13,7 +13,7 @@
 
 class Process : public Runnable {
 public:
-    Process(const std::string &programPath, const std::vector<std::shared_ptr<Value>> &arguments);
+    Process(const std::string& programPath, const std::vector<std::shared_ptr<Value>>& arguments);
 
     int run() override;
 
@@ -26,7 +26,7 @@ public:
     int getPid() const;
 
 private:
-    char **convertProgramArguments();
+    char** convertProgramArguments();
 
     void changeStandardDescriptors();
 

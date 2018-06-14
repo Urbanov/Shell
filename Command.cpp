@@ -20,7 +20,7 @@ Command::Command(std::string command_id, std::vector<std::shared_ptr<Value>> arg
     commands.insert(std::make_pair("exit", [this]() { return exit(); }));
 }
 
-int Command::run() const
+int Command::run()
 {
     return commands.at(command_id)();
 }

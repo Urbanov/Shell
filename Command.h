@@ -23,7 +23,7 @@ private:
 public:
     Command(std::string command_id, std::vector<std::shared_ptr<Value>> arguments);
 
-    int run() const override;
+    int run() override;
 
     const std::string getValue() override;
 };

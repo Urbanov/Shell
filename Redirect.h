@@ -10,15 +10,15 @@
 
 class Redirect : public Process {
 public:
-    Redirect(const std::string &programPath, const std::vector<std::shared_ptr<Value>> &arguments);
+    Redirect(const std::string& programPath, const std::vector<std::shared_ptr<Value>>& arguments);
 
-    const std::string &getInput() const;
+    const std::string& getInput() const;
 
-    void setInput(const std::string &input);
+    void setInput(const std::string& input);
 
-    const std::string &getOutput() const;
+    const std::string& getOutput() const;
 
-    void setOutput(const std::string &output);
+    void setOutput(const std::string& output);
 
 private:
     std::string input;

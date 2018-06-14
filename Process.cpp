@@ -10,35 +10,36 @@
 #include <wait.h>
 #include "Process.h"
 
-int Process::run() {
+int Process::run()
+{
     int result = fork();
-    if(result == 0) {
+    if (result == 0) {
         changeStandardDescriptors();
         execv(programPath.c_str(), convertProgramArguments());
-        for(auto i : descriptors) {
+        for (auto i : descriptors) {
             close(i);
         }
         exit(1);
-    }
-    else if(result > 0) {
+    } else if (result > 0) {
         pid = result;
-    }
-    else {
+    } else {
         std::cerr << "Fork failed." << std::endl;
     }
 }
 
-char **Process::convertProgramArguments() {
-    auto **convertedArguments = new char*[arguments.size()];
+char** Process::convertProgramArguments()
+{
+    auto** convertedArguments = new char* [arguments.size()];
     int count = 0;
-    for(auto &element : arguments) {
+    for (auto& element : arguments) {
         convertedArguments[count] = strdup(element->getValue().c_str());
         count++;
     }
     return convertedArguments;
 }
 
-const std::string Process::getValue()  {
+const std::string Process::getValue()
+{
     const int buf_len = 512;
     char buf[buf_len];
     int status = 0;
@@ -48,7 +49,7 @@ const std::string Process::getValue()  {
     int fd = open("/tmp/output_pipe", O_RDONLY);
     ssize_t len = 0;
     std::string value;
-    while((len = read(fd, buf, buf_len)) > 0) {
+    while ((len = read(fd, buf, buf_len)) > 0) {
         value.append(buf, static_cast<unsigned long>(len));
     }
     close(fd);
@@ -65,23 +66,25 @@ const std::string Process::getValue()  {
     //TODO sprawdz ktora wersja dziala poprawnie
 }
 
-Process::Process(const std::string &programPath, const std::vector<std::shared_ptr<Value>> &arguments)
-        : programPath(programPath), arguments(arguments), pid(-1)
+Process::Process(const std::string& programPath, const std::vector<std::shared_ptr<Value>>& arguments)
+    : programPath(programPath), arguments(arguments), pid(-1)
 {
     descriptors.resize(3);
     filePaths.resize(3);
-    for(int i = 0; i < filePaths.size(); ++i) {
+    for (int i = 0; i < filePaths.size(); ++i) {
         descriptors[i] = i;
     }
 }
 
-int Process::getPid() const {
+int Process::getPid() const
+{
     return pid;
 }
 
-void Process::changeStandardDescriptors() {
-    for(int i =0 ; i < filePaths.size(); ++i) {
-        if(!filePaths[i].empty()) {
+void Process::changeStandardDescriptors()
+{
+    for (int i = 0; i < filePaths.size(); ++i) {
+        if (!filePaths[i].empty()) {
             int flag = ((i == 0) ? O_WRONLY : O_RDONLY);
             descriptors[i] = open(filePaths[i].c_str(), flag);
             dup2(descriptors[i], i);

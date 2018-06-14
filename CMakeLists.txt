@@ -9,10 +9,9 @@ set(parser
     parser/generated/ShellParser.cpp
     parser/generated/ShellLexer.cpp
     parser/generated/ShellParserVisitor.cpp
-    parser/Parser.cpp parser/Parser.h parser/Visitor.cpp parser/Visitor.h)
+        parser/Parser.cpp parser/Parser.h parser/Visitor.cpp parser/Visitor.h parser/ErrorListener.cpp parser/ErrorListener.h)
 
-add_executable(shell main.cpp ${parser} Shell.cpp Shell.h Statement.cpp Statement.h Variable.cpp Variable.h Assignment.cpp Assignment.h Value.h Environment.cpp Environment.h Return.cpp Return.h Constant.cpp Constant.h Runnable.cpp Runnable.h Command.cpp Command.h Process.cpp Process.h ExportEnv.cpp ExportEnv.h parser/ErrorListener.cpp parser/ErrorListener.h)
-add_executable(shell main.cpp ${parser} Shell.cpp Shell.h Statement.cpp Statement.h Variable.cpp Variable.h Assignment.cpp Assignment.h Value.h Environment.cpp Environment.h Return.cpp Return.h Constant.cpp Constant.h Runnable.cpp Runnable.h Command.cpp Command.h Process.cpp Process.h Pipe.cpp Pipe.h Redirect.cpp Redirect.h)
+add_executable(shell main.cpp ${parser} Shell.cpp Shell.h Statement.cpp Statement.h Variable.cpp Variable.h Assignment.cpp Assignment.h Value.h Environment.cpp Environment.h Return.cpp Return.h Constant.cpp Constant.h Runnable.cpp Runnable.h Command.cpp Command.h Process.cpp Process.h ExportEnv.cpp ExportEnv.h Pipe.cpp Pipe.h Redirect.cpp Redirect.h)
 
 target_link_libraries(shell "${PROJECT_SOURCE_DIR}/libs/libantlr4-runtime.so")
 

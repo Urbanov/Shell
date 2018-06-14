@@ -9,7 +9,7 @@ class Runnable : public Value, public Statement {
 public:
     void execute() final;
 
-    virtual int run() const = 0;
+    virtual int run() = 0;
 };
 
 
