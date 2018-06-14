@@ -5,12 +5,18 @@
 #include <sys/stat.h>
 #include <wait.h>
 #include "Process.h"
+#include "../Environment.h"
 
 int Process::run()
 {
     if(forkNewProcess() == 0) {
+        Environment::getInstance().registerProcess(pid);
+
         int state = 0;
         waitpid(pid, &state, 0);
+
+        Environment::getInstance().unregisterProcess(pid);
+
         return WEXITSTATUS(state);
     }
 }
@@ -110,7 +116,6 @@ int Process::forkNewProcess()
         }
         exit(1);
     } else if (result > 0) {
-
         pid = result;
         return 0;
     } else {

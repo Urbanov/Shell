@@ -4,5 +4,7 @@
 
 void Runnable::execute()
 {
-    Environment::getInstance().setExitCode(run());
+    if(!Environment::getInstance().isTerminated) {
+        Environment::getInstance().setExitCode(run());
+    }
 }

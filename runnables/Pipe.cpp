@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include <iostream>
 #include "Pipe.h"
+#include "../Environment.h"
 
 const int alphabet_length = 25;
 const int capital_a_ascii_number = 65;
@@ -26,6 +27,7 @@ int Pipe::run()
     createPipes();
     for (auto& process : processList) {
         process->forkNewProcess();
+        Environment::getInstance().registerProcess(process->getPid());
     }
     waitForProcesses();
     destroyPipes();
@@ -59,7 +61,11 @@ void Pipe::createPipes()
 void Pipe::waitForProcesses()
 {
     int status = 0;
-    while (wait(&status) > 0); //waiting for all child processes to end
+    int pid = -1;
+    while ((pid = wait(&status)) > 0) //waiting for all child processes to end
+    {
+        Environment::getInstance().unregisterProcess(pid);
+    }
 }
 
 void Pipe::destroyPipes()

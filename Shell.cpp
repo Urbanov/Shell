@@ -10,6 +10,8 @@ void Shell::start() const
     std::string line;
 
     do {
+        Environment::getInstance().isTerminated = false;
+
         printPrompt();
         std::getline(std::cin, line);
 

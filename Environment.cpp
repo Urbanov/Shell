@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <pwd.h>
+#include <signal.h>
 #include "Environment.h"
 
 std::shared_ptr<Variable> Environment::getVariable(const std::string& name)
@@ -50,6 +51,7 @@ void Environment::setExitCode(int exit)
 Environment::Environment()
     : exitCode(0)
     , running(true)
+    , isTerminated(false)
 {}
 
 bool Environment::isRunning() const
@@ -60,4 +62,19 @@ bool Environment::isRunning() const
 void Environment::exit()
 {
     running = false;
+}
+
+void Environment::registerProcess(int pid) {
+    processList.push_back(pid);
+}
+
+void Environment::unregisterProcess(int pid) {
+    processList.remove(pid);
+}
+
+void Environment::propagateSIGINT() {
+    for(auto pid : processList) {
+        kill(pid, SIGINT);
+    }
+    processList.clear();
 }
