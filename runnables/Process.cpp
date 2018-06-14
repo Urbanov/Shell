@@ -26,20 +26,14 @@ char** Process::convertProgramArguments()
 {
     auto** convertedArguments = new char* [arguments.size() + 2];
     int count = 0;
-    std::regex programName("[^/]*?$");
-    std::smatch match;
-    if(std::regex_search(programPath.begin(), programPath.end(), match, programName)) {
-        std::cout << "match " << match[0] << std::endl;
-    }
-    std::string name = match.str(0);
+    std::string name = getProgramName();
     convertedArguments[count] = new char[name.size() + 1];
     std::copy(name.begin(), name.end(), convertedArguments[count]);
+    convertedArguments[count][name.size()] = static_cast<char>(0);
     ++count;
     for (auto &element : arguments) {
-        std::cout<<element->getValue().c_str()<<std::endl;
         convertedArguments[count] = strdup(element->getValue().c_str());
-        count++;
-//        std::cout<<convertedArguments[count]<<std::endl;
+        ++count;
     }
     convertedArguments[count] = nullptr;
     return convertedArguments;
@@ -170,4 +164,12 @@ void Process::setDescPath(int index, std::string& path)
     if (index >= 0 && index < filePaths.size()) {
         filePaths[index] = path;
     }
+}
+
+std::string Process::getProgramName() {
+    std::regex programName("[^/]*?$");
+    std::smatch match;
+    std::regex_search(programPath.begin(), programPath.end(), match, programName);
+    return match.str(0);
+
 }

@@ -43,6 +43,8 @@ private:
 
     std::string redirectOutputReadLoop(const char* path, char* buf, size_t buf_len);
 
+    std::string getProgramName();
+
     const std::string programPath;
 
     std::vector<std::shared_ptr<Value>> arguments;
