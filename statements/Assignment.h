@@ -1,13 +1,11 @@
-
-
 #ifndef SHELL_ASSIGNMENT_H
 #define SHELL_ASSIGNMENT_H
 
 
 #include <memory>
-#include "Variable.h"
+#include "../values/Variable.h"
 #include "Statement.h"
-#include "Value.h"
+#include "../values/Value.h"
 
 class Assignment : public Statement {
 private:

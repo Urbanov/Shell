@@ -13,8 +13,6 @@ private:
 public:
     explicit Variable(const std::string& name);
 
-    void exportEnv() const;
-
     void assign(const std::string& value);
 
     bool operator==(const Variable& rhs) const;

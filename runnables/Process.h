@@ -1,7 +1,3 @@
-//
-// Created by kuba on 13.06.18.
-//
-
 #ifndef SHELL_PROCESS_H
 #define SHELL_PROCESS_H
 
@@ -19,10 +15,7 @@ public:
 
     const std::string getValue() override;
 
-
-
-
-    void setDescPath(int index, std::string &path);
+    void setDescPath(int index, std::string& path);
 
     int getPid() const;
 
@@ -37,7 +30,6 @@ public:
     int forkNewProcess();
 
 private:
-
     //program can change descriptors of child process using this vector
     std::vector<std::string> filePaths;
 
@@ -49,7 +41,7 @@ private:
 
     std::string redirectOutput();
 
-    std::string redirectOutputReadLoop(const char *path, char *buf, size_t buf_len);
+    std::string redirectOutputReadLoop(const char* path, char* buf, size_t buf_len);
 
     const std::string programPath;
 

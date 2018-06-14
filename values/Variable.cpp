@@ -1,15 +1,10 @@
 #include <iostream>
 #include "Variable.h"
-#include "Environment.h"
+#include "../Environment.h"
 
 Variable::Variable(const std::string& name)
     : name(name)
 {}
-
-void Variable::exportEnv() const
-{
-    Environment::getInstance().exportVariable(name);
-}
 
 void Variable::assign(const std::string& value)
 {

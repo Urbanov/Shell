@@ -1,7 +1,3 @@
-//
-// Created by kuba on 14.06.18.
-//
-
 #ifndef SHELL_PIPE_H
 #define SHELL_PIPE_H
 

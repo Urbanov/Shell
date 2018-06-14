@@ -1,7 +1,3 @@
-//
-// Created by kuba on 13.06.18.
-//
-
 #include <unistd.h>
 #include <iostream>
 #include <memory.h>
@@ -43,7 +39,9 @@ const std::string Process::getValue()
 }
 
 Process::Process(const std::string& programPath, const std::vector<std::shared_ptr<Value>>& arguments)
-    : programPath(programPath), arguments(arguments), pid(-1)
+    : programPath(programPath)
+    , arguments(arguments)
+    , pid(-1)
 {
     descriptors.resize(3);
     filePaths.resize(3);
@@ -64,7 +62,7 @@ void Process::changeStandardDescriptors()
             int flag = ((i == 0) ? O_RDONLY : O_WRONLY);
             descriptors[i] = open(filePaths[i].c_str(), flag | O_CREAT);
             dup2(descriptors[i], i);
-            close(descriptors[i]); //TODO check if not problematic line
+            close(descriptors[i]);
         }
     }
 }
@@ -100,7 +98,8 @@ void Process::setRedirections()
     }
 }
 
-int Process::forkNewProcess() {
+int Process::forkNewProcess()
+{
     setRedirections();
     int result = fork();
     if (result == 0) {
@@ -121,8 +120,9 @@ int Process::forkNewProcess() {
     }
 }
 
-std::string Process::redirectOutput() {
-    const char *path = "/tmp/output_pipe";
+std::string Process::redirectOutput()
+{
+    const char* path = "/tmp/output_pipe";
     const size_t buf_len = 512;
     char buf[buf_len];
     int check = mkfifo(path, 0666);
@@ -132,9 +132,10 @@ std::string Process::redirectOutput() {
     return value;
 }
 
-std::string Process::redirectOutputReadLoop(const char *path, char *buf, size_t buf_len) {
+std::string Process::redirectOutputReadLoop(const char* path, char* buf, size_t buf_len)
+{
     std::string value;
-    if(forkNewProcess() == 0) {
+    if (forkNewProcess() == 0) {
         int fd = open(path, O_RDONLY);
         ssize_t len = 0;
         while ((len = read(fd, buf, buf_len)) > 0) {
@@ -145,8 +146,9 @@ std::string Process::redirectOutputReadLoop(const char *path, char *buf, size_t 
     return value;
 }
 
-void Process::setDescPath(int index, std::string &path) {
-    if(index >=0 && index < filePaths.size()) {
+void Process::setDescPath(int index, std::string& path)
+{
+    if (index >= 0 && index < filePaths.size()) {
         filePaths[index] = path;
     }
 }

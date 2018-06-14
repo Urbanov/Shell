@@ -1,11 +1,11 @@
 #include "Visitor.h"
-#include "../Statement.h"
-#include "../Assignment.h"
-#include "../Return.h"
-#include "../Constant.h"
-#include "../Command.h"
-#include "../Process.h"
-#include "../Pipe.h"
+#include "../statements/Statement.h"
+#include "../statements/Assignment.h"
+#include "../values/Return.h"
+#include "../values/Constant.h"
+#include "../runnables/Command.h"
+#include "../runnables/Process.h"
+#include "../runnables/Pipe.h"
 
 antlrcpp::Any Visitor::visitStatement(ShellParser::StatementContext* context)
 {

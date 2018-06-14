@@ -2,8 +2,8 @@
 #define SHELL_RUNNABLE_H
 
 
-#include "Value.h"
-#include "Statement.h"
+#include "../values/Value.h"
+#include "../statements/Statement.h"
 
 class Runnable : public Value, public Statement {
 public:

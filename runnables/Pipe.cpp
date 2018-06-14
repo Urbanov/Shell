@@ -1,7 +1,3 @@
-//
-// Created by kuba on 14.06.18.
-//
-
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
