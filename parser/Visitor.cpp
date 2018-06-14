@@ -85,13 +85,12 @@ antlrcpp::Any Visitor::visitArguments(ShellParser::ArgumentsContext* context)
 
 antlrcpp::Any Visitor::visitProcess(ShellParser::ProcessContext* context)
 {
-    std::shared_ptr<Statement> process = std::make_shared<Process>(context->PATH_TOKEN()->getText(),
-                                                                   visitArguments(context->arguments()));
+    std::shared_ptr<Statement> process = std::make_shared<Process>(context->PATH_TOKEN()->getText(), visitArguments(context->arguments()));
     if (context->INPUT_REDIRECTION_TOKEN()) {
-        std::dynamic_pointer_cast<Process>(process)->setInput(context->INPUT_REDIRECTION_TOKEN()->getText());
+        std::dynamic_pointer_cast<Process>(process)->setInput(context->INPUT_REDIRECTION_TOKEN()->getText().substr(1));
     }
     if (context->OUTPUT_REDIRECTION_TOKEN()) {
-        std::dynamic_pointer_cast<Process>(process)->setInput(context->OUTPUT_REDIRECTION_TOKEN()->getText());
+        std::dynamic_pointer_cast<Process>(process)->setOutput(context->OUTPUT_REDIRECTION_TOKEN()->getText().substr(1));
     }
     return process;
 }

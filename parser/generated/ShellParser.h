@@ -12,15 +12,15 @@
 class  ShellParser : public antlr4::Parser {
 public:
   enum {
-      WHITESPACE = 1, COMMAND_TOKEN = 2, VARIABLE_TOKEN = 3, PATH_TOKEN = 4,
-      QUOTE_STRING_TOKEN = 5, PIPE_TOKEN = 6, BACK_QUOTE_TOKEN = 7, EQUALS_TOKEN = 8,
-      VARIABLE_VALUE_TOKEN = 9, RETURN_TOKEN = 10, INPUT_REDIRECTION_TOKEN = 11,
-      OUTPUT_REDIRECTION_TOKEN = 12, CONSTANT_TOKEN = 13
+    WHITESPACE = 1, COMMAND_TOKEN = 2, VARIABLE_TOKEN = 3, PATH_TOKEN = 4, 
+    QUOTE_STRING_TOKEN = 5, PIPE_TOKEN = 6, BACK_QUOTE_TOKEN = 7, EQUALS_TOKEN = 8, 
+    VARIABLE_VALUE_TOKEN = 9, RETURN_TOKEN = 10, INPUT_REDIRECTION_TOKEN = 11, 
+    OUTPUT_REDIRECTION_TOKEN = 12, CONSTANT_TOKEN = 13
   };
 
   enum {
-      RuleStatement = 0, RuleAssignment = 1, RuleValue = 2, RuleRunnable = 3,
-      RuleArguments = 4, RuleProcess = 5, RuleCommand = 6, RulePipe = 7
+    RuleStatement = 0, RuleAssignment = 1, RuleValue = 2, RuleRunnable = 3, 
+    RuleArguments = 4, RuleProcess = 5, RuleCommand = 6, RulePipe = 7
   };
 
   ShellParser(antlr4::TokenStream *input);
