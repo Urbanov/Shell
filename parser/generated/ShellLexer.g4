@@ -13,7 +13,7 @@ VARIABLE_TOKEN
     ;
 
 PATH_TOKEN
-    : [-_.a-zA-Z0-9]* '/' [-_.a-zA-Z0-9]+
+    : [-_.a-zA-Z0-9]* '/' [-_.a-zA-Z0-9/]+
     ;
 
 QUOTE_STRING_TOKEN
@@ -41,13 +41,13 @@ RETURN_TOKEN
     ;
 
 INPUT_REDIRECTION_TOKEN
-    : '<' [-_.a-zA-Z0-9]+
+    : '<' [-_.a-zA-Z0-9/]+
     ;
 
 OUTPUT_REDIRECTION_TOKEN
-    : '>' [-_.a-zA-Z0-9]+
+    : '>' [-_.a-zA-Z0-9/]+
     ;
 
 CONSTANT_TOKEN
-    : [-_.a-zA-Z0-9]+
+    : [-_.a-zA-Z0-9/]+
     ;
