@@ -54,15 +54,7 @@ const std::string Process::getValue()
     }
     unlink(path);
     return value;
-
-    //alternatywny kod zmien buf na 512
-
-//    int status = 0;
-//    waitpid(pid, &status, 0);
-//    auto length = read(fd, buf, 65536);
-//    return std::string(buf, static_cast<unsigned long>(length));
-
-    //TODO sprawdz ktora wersja dziala poprawnie
+    
 }
 
 Process::Process(const std::string& programPath, const std::vector<std::shared_ptr<Value>>& arguments)
